@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Porolytics - The Scout's War Room</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Animated Background Particles -->
+    <div class="particles-container" id="particles"></div>
+    
+    <!-- Main Hero Section -->
+    <div class="hero-container">
+        <!-- Left Side - Brand & Message -->
+        <div class="hero-left">
+            <div class="main-content">
+                <div class="logo-section">
+                    <img src="images/title.png" alt="Porolytics" class="logo-image">
+                    <div class="logo-subtext">The Scout's War Room</div>
+                </div>
+                
+                <h1 class="main-headline">READ THE GAME<br>BEFORE IT BEGINS</h1>
+                
+                <p class="subheading">
+                    Porolytics reveals how teams win — their dependencies, 
+                    their weaknesses, and how to break them before draft even starts.
+                </p>
+                
+                <div class="cta-buttons">
+                    <button class="btn-primary">
+                        <span>Analyze an Opponent</span>
+                        <svg class="btn-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M7 3L14 10L7 17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right Side - Poro Character -->
+        <div class="hero-right">
+            <!-- Removed placeholder - Poro now in bottom left corner -->
+        </div>
+    </div>
+    
+    <!-- Professor Poro in Bottom Left Corner -->
+    <div class="poro-corner">
+        <img src="images/professor_poro.png" alt="Professor Poro" class="poro-image">
+        <div class="speech-bubble">
+            "Every team has a lynchpin."
+        </div>
+    </div>
+    
+    <!-- Modal Overlay -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-panel" id="modalPanel">
+            <!-- Header -->
+            <div class="modal-header">
+                <svg class="modal-icon" width="40" height="40" viewBox="0 0 40 40" fill="none">
+                    <path d="M20 5L25 15L35 17L27 25L29 35L20 30L11 35L13 25L5 17L15 15L20 5Z" stroke="#0AC8B9" stroke-width="2" fill="none"/>
+                </svg>
+                <h2 class="modal-title">MATCH ANALYSIS SETUP</h2>
+                <p class="modal-subtitle">Prepare the battlefield before draft begins.</p>
+            </div>
+            
+            <!-- Input Section -->
+            <div class="modal-inputs">
+                <div class="input-group">
+                    <label for="yourTeam">Your Team Name</label>
+                    <input type="text" id="yourTeam" placeholder="Enter your team" class="modal-input" value="G2 Esports">
+                </div>
+                
+                <div class="input-group">
+                    <label for="opponentTeam">Opponent Team Name</label>
+                    <input type="text" id="opponentTeam" placeholder="Enter opponent team" class="modal-input opponent-input" value="GIANTX">
+                </div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="modal-actions">
+                <button class="modal-btn-primary" id="beginAnalysis">
+                    <span>Begin Analysis</span>
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M7 3L14 10L7 17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </button>
+                <button class="modal-btn-secondary" id="cancelModal">Cancel</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>

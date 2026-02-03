@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis - Porolytics</title>
+    <link rel="stylesheet" href="analysis-styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="top-nav">
+        <div class="nav-content">
+            <img src="images/title.png" alt="Porolytics" class="nav-logo">
+            <div class="nav-teams">
+                <span class="team-name">G2 Esports</span>
+                <span class="vs">VS</span>
+                <span class="team-name opponent">GIANTX</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Section 1: What This Analysis Provides -->
+    <section class="analysis-section intro-section">
+        <div class="section-content">
+            <h1 class="section-title">What Porolytics Reveals</h1>
+            
+            <div class="insight-cards">
+                <div class="insight-card">
+                    <div class="card-icon">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                            <path d="M24 8L28 18L38 20L31 27L33 38L24 33L15 38L17 27L10 20L20 18L24 8Z" stroke="#9B6FE8" stroke-width="2" fill="none"/>
+                        </svg>
+                    </div>
+                    <h3>Draft Tendencies</h3>
+                    <p>Identify champion preferences, priority picks, and comfort zones across multiple matches.</p>
+                </div>
+                
+                <div class="insight-card">
+                    <div class="card-icon">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                            <circle cx="15" cy="24" r="6" stroke="#C89B3C" stroke-width="2" fill="none"/>
+                            <circle cx="33" cy="24" r="6" stroke="#C89B3C" stroke-width="2" fill="none"/>
+                            <path d="M21 24L27 24" stroke="#C89B3C" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <h3>Strategy Dependencies</h3>
+                    <p>Reveal how champion picks influence each other and create strategic synergies.</p>
+                </div>
+                
+                <div class="insight-card">
+                    <div class="card-icon">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                            <path d="M24 10L24 38M10 24L38 24" stroke="#9B6FE8" stroke-width="2"/>
+                            <circle cx="24" cy="24" r="12" stroke="#9B6FE8" stroke-width="2" fill="none"/>
+                        </svg>
+                    </div>
+                    <h3>Weak Points</h3>
+                    <p>Discover vulnerabilities in opponent identity and exploitable patterns.</p>
+                </div>
+                
+                <div class="insight-card">
+                    <div class="card-icon">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                            <rect x="10" y="10" width="28" height="28" stroke="#9B6FE8" stroke-width="2" fill="none"/>
+                            <path d="M18 24L22 28L30 20" stroke="#9B6FE8" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <h3>Draft Outcomes</h3>
+                    <p>Understand how picks and bans shape match outcomes before the game begins.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: Champion Picks Graph -->
+    <section class="analysis-section simulation-section">
+        <div class="section-content">
+            <h2 class="section-title">Champion Picks Strategy Graph</h2>
+            <p class="section-subtitle">How champion picks create strategic dependencies and synergies</p>
+            
+            <div class="simulation-container">
+                <div class="simulation-layout">
+                    <div class="graph-container">
+                        <canvas id="picksGraph" width="500" height="375"></canvas>
+                        <div class="node-tooltip" id="picksNodeTooltip">
+                            <h5 class="tooltip-title"></h5>
+                            <div class="tooltip-section">
+                                <strong>What this strategy means:</strong>
+                                <p class="tooltip-meaning"></p>
+                            </div>
+                            <div class="tooltip-section">
+                                <strong>What enables it:</strong>
+                                <p class="tooltip-requires"></p>
+                            </div>
+                            <div class="tooltip-section">
+                                <strong>What breaks it:</strong>
+                                <p class="tooltip-breaks"></p>
+                            </div>
+                        </div>
+                        <div class="graph-legend">
+                            <div class="legend-item">
+                                <span class="legend-color" style="background: #0AC8B9;"></span>
+                                <span>Wins</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-color" style="background: #FF4655;"></span>
+                                <span>Losses (Bait)</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-color picks"></span>
+                                <span>Mixed (Fragile)</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-ring"></span>
+                                <span>Lynchpin</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="conclusions-panel" id="picksConclusions">
+                        <h3>Key Insights</h3>
+                        <div class="insight-content">
+                            <p class="insight-placeholder">Run the simulation to see strategic patterns emerge...</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="simulation-controls">
+                    <button class="sim-btn primary" id="runPicksSimulation">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" class="play-icon">
+                            <path d="M5 3L15 10L5 17V3Z" fill="currentColor"/>
+                        </svg>
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" class="pause-icon" style="display: none;">
+                            <rect x="5" y="3" width="4" height="14" fill="currentColor"/>
+                            <rect x="11" y="3" width="4" height="14" fill="currentColor"/>
+                        </svg>
+                        <span class="btn-text">Run Simulation</span>
+                    </button>
+                    <button class="sim-btn" id="resetPicksSimulation">Reset</button>
+                </div>
+                
+                <div class="match-timeline" id="picksTimeline">
+                    <!-- Matches will be populated by JS -->
+                </div>
+                
+                <div class="match-detail-popup" id="picksDetailPopup">
+                    <button class="popup-close" onclick="document.getElementById('picksDetailPopup').classList.remove('active')">×</button>
+                    <h4>Match <span id="picksMatchNumber"></span> - Champion Picks</h4>
+                    <div class="match-picks" id="picksMatchData"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Champion Bans Graph -->
+    <section class="analysis-section simulation-section">
+        <div class="section-content">
+            <h2 class="section-title">Champion Bans Strategy Graph</h2>
+            <p class="section-subtitle">How champion bans reveal opponent weaknesses and strategic priorities</p>
+            
+            <div class="simulation-container">
+                <div class="simulation-layout">
+                    <div class="graph-container">
+                        <canvas id="bansGraph" width="500" height="375"></canvas>
+                        <div class="node-tooltip" id="bansNodeTooltip">
+                            <h5 class="tooltip-title"></h5>
+                            <div class="tooltip-section">
+                                <strong>What this strategy means:</strong>
+                                <p class="tooltip-meaning"></p>
+                            </div>
+                            <div class="tooltip-section">
+                                <strong>What enables it:</strong>
+                                <p class="tooltip-requires"></p>
+                            </div>
+                            <div class="tooltip-section">
+                                <strong>What breaks it:</strong>
+                                <p class="tooltip-breaks"></p>
+                            </div>
+                        </div>
+                        <div class="graph-legend">
+                            <div class="legend-item">
+                                <span class="legend-color" style="background: #0AC8B9;"></span>
+                                <span>Wins</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-color" style="background: #FF4655;"></span>
+                                <span>Losses (Bait)</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-color bans"></span>
+                                <span>Mixed (Fragile)</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-ring"></span>
+                                <span>Lynchpin</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="conclusions-panel" id="bansConclusions">
+                        <h3>Key Insights</h3>
+                        <div class="insight-content">
+                            <p class="insight-placeholder">Run the simulation to see strategic patterns emerge...</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="simulation-controls">
+                    <button class="sim-btn primary" id="runBansSimulation">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" class="play-icon">
+                            <path d="M5 3L15 10L5 17V3Z" fill="currentColor"/>
+                        </svg>
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" class="pause-icon" style="display: none;">
+                            <rect x="5" y="3" width="4" height="14" fill="currentColor"/>
+                            <rect x="11" y="3" width="4" height="14" fill="currentColor"/>
+                        </svg>
+                        <span class="btn-text">Run Simulation</span>
+                    </button>
+                    <button class="sim-btn" id="resetBansSimulation">Reset</button>
+                </div>
+                
+                <div class="match-timeline" id="bansTimeline">
+                    <!-- Matches will be populated by JS -->
+                </div>
+                
+                <div class="match-detail-popup" id="bansDetailPopup">
+                    <button class="popup-close" onclick="document.getElementById('bansDetailPopup').classList.remove('active')">×</button>
+                    <h4>Match <span id="bansMatchNumber"></span> - Champion Bans</h4>
+                    <div class="match-bans" id="bansMatchData"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: Draft Conclusion Module -->
+    <section class="analysis-section conclusion-section">
+        <div class="section-content">
+            <h2 class="section-title">Draft Conclusions</h2>
+            
+            <div class="conclusion-cards-container">
+                <div class="conclusion-card">
+                    <h3>Based on Champion Picks</h3>
+                    <ul class="conclusion-list">
+                        <li>GIANTX shows strong preference for engage-heavy compositions</li>
+                        <li>Closer consistently picks early-game junglers (Lee Sin, Viego, Elise)</li>
+                        <li>Jackies favors scaling mid-laners with wave-clear</li>
+                        <li>Team relies on mid-jungle synergy for map control</li>
+                    </ul>
+                </div>
+                
+                <div class="conclusion-card">
+                    <h3>Based on Champion Bans</h3>
+                    <ul class="conclusion-list">
+                        <li>Consistently bans split-push threats (Fiora, Camille, Jax)</li>
+                        <li>Targets hyper-scaling ADCs to force early fights</li>
+                        <li>Protects Closer's jungle matchups aggressively</li>
+                        <li>Weak against poke compositions - rarely banned</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Advanced Strategy Analysis Link -->
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="strategy-analysis.html" style="display: inline-block; padding: 20px 40px; background: linear-gradient(135deg, #9B6FE8 0%, #C89B3C 100%); color: #F0F6F6; text-decoration: none; border-radius: 12px; font-size: 18px; font-weight: 700; transition: transform 0.3s ease; box-shadow: 0 4px 15px rgba(155, 111, 232, 0.4);">
+                    🎯 View Advanced Strategy Analysis →
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Fixed Poro Guide -->
+    <div class="poro-guide-fixed" id="poroGuideFixed">
+        <img src="images/professor_poro.png" alt="Professor Poro">
+        <div class="poro-tooltip-fixed" id="poroTooltipFixed">
+            <p><strong>What conclusions should you draw?</strong></p>
+            <p>GIANTX heavily prioritizes early-game jungle control. Their draft revolves around Closer's champion pool.</p>
+            <p><strong>Why this matters:</strong></p>
+            <p>Banning jungle champions disrupts their entire strategy. Target Closer's comfort picks.</p>
+        </div>
+    </div>
+
+    <script src="analysis-script.js"></script>
+</body>
+</html>

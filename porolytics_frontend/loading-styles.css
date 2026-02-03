@@ -1,0 +1,136 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    background: #010A13;
+    color: #F0F6F6;
+    overflow: hidden;
+    min-height: 100vh;
+}
+
+.loading-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: 
+        linear-gradient(135deg, rgba(1, 10, 19, 0.95) 0%, rgba(10, 21, 32, 0.95) 100%),
+        url('images/landing page bg.jpg') center/cover;
+}
+
+.loading-content {
+    text-align: center;
+    max-width: 600px;
+    padding: 40px;
+}
+
+.progress-section {
+    margin-bottom: 60px;
+}
+
+.progress-bar-container {
+    width: 100%;
+    height: 8px;
+    background: rgba(155, 111, 232, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    box-shadow: 0 0 20px rgba(155, 111, 232, 0.2);
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #9B6FE8 0%, #C89B3C 100%);
+    width: 0%;
+    transition: width 0.5s ease;
+    box-shadow: 0 0 20px rgba(155, 111, 232, 0.6);
+}
+
+.loading-text {
+    font-size: 18px;
+    color: #9B6FE8;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    animation: textPulse 2s ease-in-out infinite;
+}
+
+@keyframes textPulse {
+    0%, 100% {
+        opacity: 0.7;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+.poro-analyst {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+}
+
+.poro-analyzing {
+    width: 150px;
+    height: auto;
+    animation: poroFloat 3s ease-in-out infinite;
+}
+
+@keyframes poroFloat {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.chalkboard {
+    width: 200px;
+    height: 200px;
+    background: rgba(20, 30, 40, 0.8);
+    border: 3px solid #C89B3C;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(200, 155, 60, 0.3);
+}
+
+.chalk-drawing {
+    width: 180px;
+    height: 180px;
+}
+
+.chalk-line {
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+    animation: drawLine 2s ease-in-out infinite;
+}
+
+.chalk-node {
+    animation: nodeGlow 2s ease-in-out infinite;
+}
+
+@keyframes drawLine {
+    0%, 100% {
+        stroke-dashoffset: 100;
+    }
+    50% {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes nodeGlow {
+    0%, 100% {
+        opacity: 0.5;
+    }
+    50% {
+        opacity: 1;
+    }
+}
