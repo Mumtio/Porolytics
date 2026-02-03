@@ -12,9 +12,9 @@
         <div class="nav-content">
             <img src="images/title.png" alt="Porolytics" class="nav-logo">
             <div class="nav-teams">
-                <span class="team-name">G2 Esports</span>
+                <span class="team-name">Cloud9</span>
                 <span class="vs">VS</span>
-                <span class="team-name opponent">GIANTX</span>
+                <span class="team-name opponent">T1</span>
             </div>
         </div>
     </nav>
@@ -241,41 +241,1080 @@
                 <div class="conclusion-card">
                     <h3>Based on Champion Picks</h3>
                     <ul class="conclusion-list">
-                        <li>GIANTX shows strong preference for engage-heavy compositions</li>
-                        <li>Closer consistently picks early-game junglers (Lee Sin, Viego, Elise)</li>
-                        <li>Jackies favors scaling mid-laners with wave-clear</li>
-                        <li>Team relies on mid-jungle synergy for map control</li>
+                        <li>T1 shows strong preference for scaling compositions with teamfight potential</li>
+                        <li>Faker consistently picks control mages with wave-clear and roam potential</li>
+                        <li>Oner favors early-game junglers with objective control (Lee Sin, Viego)</li>
+                        <li>Team relies on mid-jungle synergy and vision control for map dominance</li>
                     </ul>
                 </div>
                 
                 <div class="conclusion-card">
                     <h3>Based on Champion Bans</h3>
                     <ul class="conclusion-list">
-                        <li>Consistently bans split-push threats (Fiora, Camille, Jax)</li>
-                        <li>Targets hyper-scaling ADCs to force early fights</li>
-                        <li>Protects Closer's jungle matchups aggressively</li>
-                        <li>Weak against poke compositions - rarely banned</li>
+                        <li>Consistently bans aggressive early-game junglers to protect Oner's pathing</li>
+                        <li>Targets champions that disrupt vision control and objective setups</li>
+                        <li>Protects Faker's lane matchups by banning roaming assassins</li>
+                        <li>Weak against split-push compositions - rarely prioritized in bans</li>
                     </ul>
                 </div>
             </div>
             
-            <!-- Advanced Strategy Analysis Link -->
-            <div style="text-align: center; margin-top: 40px;">
-                <a href="strategy-analysis.html" style="display: inline-block; padding: 20px 40px; background: linear-gradient(135deg, #9B6FE8 0%, #C89B3C 100%); color: #F0F6F6; text-decoration: none; border-radius: 12px; font-size: 18px; font-weight: 700; transition: transform 0.3s ease; box-shadow: 0 4px 15px rgba(155, 111, 232, 0.4);">
-                    🎯 View Advanced Strategy Analysis →
-                </a>
+        </div>
+    </section>
+
+    <!-- Section 5: Strategy Transition Graph -->
+    <section class="analysis-section strategy-transition-section">
+        <div class="section-content">
+            <!-- 1. Section Header -->
+            <div class="strategy-header">
+                <h2 class="section-title">Strategy Transition Graph</h2>
+                <p class="section-subtitle">How teams change strategy after each fight or objective</p>
+                <div class="info-icon-inline" data-tooltip="Each arrow shows what strategy the team plays next after an encounter.">ⓘ</div>
+            </div>
+
+            <!-- 2. Mode Selector -->
+            <div class="outcome-filter">
+                <label class="filter-label">Outcome Filter:</label>
+                <div class="filter-options">
+                    <label class="filter-option">
+                        <input type="radio" name="outcome-filter" value="combined" checked>
+                        <span>Combined</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="radio" name="outcome-filter" value="win">
+                        <span>Win Only</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="radio" name="outcome-filter" value="loss">
+                        <span>Loss Only</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- 3. Noise Control -->
+            <div class="noise-control">
+                <label class="slider-label">
+                    Minimum Transition Frequency
+                    <span class="info-icon-inline" data-tooltip="Hide rare transitions to focus on consistent behavior.">ⓘ</span>
+                </label>
+                <div class="slider-container">
+                    <input type="range" id="transition-frequency" min="0" max="0.3" step="0.01" value="0.05">
+                    <span class="slider-value" id="frequency-value">5%</span>
+                </div>
+            </div>
+
+            <!-- 4. Main Graph Canvas -->
+            <div class="strategy-graph-container">
+                <canvas id="strategyTransitionGraph"></canvas>
+                
+                <!-- Zoom Controls -->
+                <div class="zoom-controls">
+                    <button class="zoom-btn" id="zoom-in-btn" title="Zoom In">+</button>
+                    <button class="zoom-btn" id="zoom-out-btn" title="Zoom Out">−</button>
+                    <button class="zoom-btn" id="reset-zoom-btn" title="Reset View">⟲</button>
+                </div>
+                
+                <!-- Pan Instruction -->
+                <div class="pan-instruction">Hold Shift + Drag to pan | Scroll to zoom</div>
+                
+                <!-- Node Hover Tooltip -->
+                <div class="strategy-tooltip" id="nodeTooltip">
+                    <h5 class="tooltip-title"></h5>
+                    <div class="tooltip-stats">
+                        <div class="stat-row">
+                            <span class="stat-label">Usage Rate:</span>
+                            <span class="stat-value usage-rate"></span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Win Rate:</span>
+                            <span class="stat-value win-rate"></span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Top Next Strategies:</span>
+                            <span class="stat-value next-strategies"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Edge Hover Tooltip -->
+                <div class="strategy-tooltip" id="edgeTooltip">
+                    <h5 class="tooltip-title"></h5>
+                    <div class="tooltip-stats">
+                        <div class="stat-row">
+                            <span class="stat-label">Transition Frequency:</span>
+                            <span class="stat-value frequency"></span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Win Rate:</span>
+                            <span class="stat-value success-rate"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5, 6, 7, 8: Bottom Panels -->
+            <div class="strategy-guide-panels">
+                <!-- Visual Legend -->
+                <div class="guide-panel">
+                    <h4>Visual Legend</h4>
+                    <div class="legend-items">
+                        <div class="legend-row">
+                            <div class="legend-visual node-size"></div>
+                            <span>Node size → importance</span>
+                        </div>
+                        <div class="legend-row">
+                            <div class="legend-visual edge-thick"></div>
+                            <span>Edge thickness → frequency</span>
+                        </div>
+                        <div class="legend-row">
+                            <div class="legend-visual edge-color"></div>
+                            <span>Edge color → win vs loss</span>
+                        </div>
+                        <div class="legend-row">
+                            <div class="legend-visual gold-ring"></div>
+                            <span>Gold ring → lynchpin</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- How to Read -->
+                <div class="guide-panel">
+                    <h4>How to Read</h4>
+                    <ul class="guide-list">
+                        <li>Nodes = strategies</li>
+                        <li>Arrows = next strategy after encounter</li>
+                        <li>Thicker arrows = common transitions</li>
+                        <li>Colored arrows = success vs failure</li>
+                    </ul>
+                </div>
+
+                <!-- What to Look For -->
+                <div class="guide-panel">
+                    <h4>What to Look For</h4>
+                    <ul class="guide-list">
+                        <li>Repeating paths → team identity</li>
+                        <li>Single outgoing path → predictability</li>
+                        <li>Dead-end nodes → traps</li>
+                        <li>Gold nodes → deny these to collapse strategy</li>
+                    </ul>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Fixed Poro Guide -->
-    <div class="poro-guide-fixed" id="poroGuideFixed">
-        <img src="images/professor_poro.png" alt="Professor Poro">
-        <div class="poro-tooltip-fixed" id="poroTooltipFixed">
-            <p><strong>What conclusions should you draw?</strong></p>
-            <p>GIANTX heavily prioritizes early-game jungle control. Their draft revolves around Closer's champion pool.</p>
-            <p><strong>Why this matters:</strong></p>
-            <p>Banning jungle champions disrupts their entire strategy. Target Closer's comfort picks.</p>
+    <!-- Section 6: Strategy Importance Ranking -->
+    <section class="analysis-section strategy-ranking-section">
+        <div class="section-content">
+            <!-- Header -->
+            <div class="ranking-header">
+                <h2 class="section-title">Strategy Importance Ranking</h2>
+                <p class="section-subtitle">Overall impact of each strategy on match outcomes.</p>
+                <div class="info-icon-inline" data-tooltip="Importance is calculated from usage, win impact, and dependency in the strategy graph.">ⓘ</div>
+            </div>
+
+            <!-- Strategy Ranking Cards -->
+            <div class="ranking-cards-container">
+                <div class="ranking-card rank-1" data-strategy="OBJECTIVE">
+                    <div class="card-left">
+                        <div class="strategy-indicator cyan"></div>
+                        <h3 class="strategy-name">Objective Control</h3>
+                    </div>
+                    <div class="card-middle">
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 95%;"></div>
+                        </div>
+                    </div>
+                    <div class="card-right">
+                        <span class="badge lynchpin">LYNCHPIN</span>
+                    </div>
+                    <div class="card-hover-details">
+                        <div class="detail-row">Usage rate: <strong>35%</strong></div>
+                        <div class="detail-row">Win rate: <strong>72%</strong></div>
+                        <div class="detail-row">Dependencies: <strong>4 strategies</strong></div>
+                    </div>
+                </div>
+
+                <div class="ranking-card rank-2" data-strategy="TEAMFIGHT">
+                    <div class="card-left">
+                        <div class="strategy-indicator cyan"></div>
+                        <h3 class="strategy-name">Frontline Teamfight</h3>
+                    </div>
+                    <div class="card-middle">
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 92%;"></div>
+                        </div>
+                    </div>
+                    <div class="card-right">
+                        <span class="badge lynchpin">LYNCHPIN</span>
+                    </div>
+                    <div class="card-hover-details">
+                        <div class="detail-row">Usage rate: <strong>35%</strong></div>
+                        <div class="detail-row">Win rate: <strong>72%</strong></div>
+                        <div class="detail-row">Dependencies: <strong>3 strategies</strong></div>
+                    </div>
+                </div>
+
+                <div class="ranking-card rank-3" data-strategy="BOT_PRESSURE">
+                    <div class="card-left">
+                        <div class="strategy-indicator cyan"></div>
+                        <h3 class="strategy-name">Bot Pressure</h3>
+                    </div>
+                    <div class="card-middle">
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 78%;"></div>
+                        </div>
+                    </div>
+                    <div class="card-right">
+                    </div>
+                    <div class="card-hover-details">
+                        <div class="detail-row">Usage rate: <strong>32%</strong></div>
+                        <div class="detail-row">Win rate: <strong>68%</strong></div>
+                        <div class="detail-row">Dependencies: <strong>2 strategies</strong></div>
+                    </div>
+                </div>
+
+                <div class="ranking-card rank-4" data-strategy="SCALING">
+                    <div class="card-left">
+                        <div class="strategy-indicator cyan"></div>
+                        <h3 class="strategy-name">Scaling Insurance</h3>
+                    </div>
+                    <div class="card-middle">
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 65%;"></div>
+                        </div>
+                    </div>
+                    <div class="card-right">
+                        <span class="badge lynchpin">LYNCHPIN</span>
+                    </div>
+                    <div class="card-hover-details">
+                        <div class="detail-row">Usage rate: <strong>28%</strong></div>
+                        <div class="detail-row">Win rate: <strong>62%</strong></div>
+                        <div class="detail-row">Dependencies: <strong>2 strategies</strong></div>
+                    </div>
+                </div>
+
+                <div class="ranking-card rank-5" data-strategy="MID_TEMPO">
+                    <div class="card-left">
+                        <div class="strategy-indicator purple"></div>
+                        <h3 class="strategy-name">Mid Tempo</h3>
+                    </div>
+                    <div class="card-middle">
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 52%;"></div>
+                        </div>
+                    </div>
+                    <div class="card-right">
+                    </div>
+                    <div class="card-hover-details">
+                        <div class="detail-row">Usage rate: <strong>24%</strong></div>
+                        <div class="detail-row">Win rate: <strong>58%</strong></div>
+                        <div class="detail-row">Dependencies: <strong>2 strategies</strong></div>
+                    </div>
+                </div>
+
+                <div class="ranking-card rank-6" data-strategy="PICK_OFF">
+                    <div class="card-left">
+                        <div class="strategy-indicator red"></div>
+                        <h3 class="strategy-name">Pick Off</h3>
+                    </div>
+                    <div class="card-middle">
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 38%;"></div>
+                        </div>
+                    </div>
+                    <div class="card-right">
+                        <span class="badge fragile">FRAGILE</span>
+                    </div>
+                    <div class="card-hover-details">
+                        <div class="detail-row">Usage rate: <strong>15%</strong></div>
+                        <div class="detail-row">Win rate: <strong>35%</strong></div>
+                        <div class="detail-row">Dependencies: <strong>1 strategy</strong></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 7: Strategy Failure Modes -->
+    <section class="analysis-section strategy-failure-section">
+        <div class="section-content">
+            <!-- Header -->
+            <div class="failure-header">
+                <h2 class="section-title">Strategy Failure Modes</h2>
+                <p class="section-subtitle">Recurring strategic paths that correlate with losses.</p>
+                <div class="info-icon-inline" data-tooltip="These patterns appear significantly more often in losses than in wins.">ⓘ</div>
+            </div>
+
+            <!-- Failure Pattern Cards -->
+            <div class="failure-cards-container">
+                <!-- Pattern 1: TRAP -->
+                <div class="failure-card high-impact" data-pattern="PICK_OFF-RIVER-OBJECTIVE">
+                    <div class="card-top">
+                        <span class="failure-label trap">TRAP</span>
+                    </div>
+                    <div class="card-middle">
+                        <div class="strategy-path">
+                            <span class="path-node">Pick Off</span>
+                            <span class="path-arrow">→</span>
+                            <span class="path-node">River Control</span>
+                            <span class="path-arrow">→</span>
+                            <span class="path-node">Objective</span>
+                        </div>
+                    </div>
+                    <div class="card-bottom">
+                        <div class="frequency-bars">
+                            <div class="bar-row loss-bar-row">
+                                <span class="bar-label">Losses</span>
+                                <div class="frequency-bar loss-bar">
+                                    <div class="bar-fill" style="width: 78%;"></div>
+                                </div>
+                            </div>
+                            <div class="bar-row win-bar-row">
+                                <span class="bar-label">Wins</span>
+                                <div class="frequency-bar win-bar">
+                                    <div class="bar-fill" style="width: 22%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-hover-info">
+                        <div class="hover-stat">Loss occurrence: <strong>78%</strong></div>
+                        <div class="hover-stat">Win occurrence: <strong>22%</strong></div>
+                        <div class="hover-stat">Typical phase: <strong>Early → Mid</strong></div>
+                    </div>
+                </div>
+
+                <!-- Pattern 2: OVERCOMMIT -->
+                <div class="failure-card medium-impact" data-pattern="TOP_SPLIT-MID-TEAMFIGHT">
+                    <div class="card-top">
+                        <span class="failure-label overcommit">OVERCOMMIT</span>
+                    </div>
+                    <div class="card-middle">
+                        <div class="strategy-path">
+                            <span class="path-node">Top Split</span>
+                            <span class="path-arrow">→</span>
+                            <span class="path-node">Mid Control</span>
+                            <span class="path-arrow">→</span>
+                            <span class="path-node">Teamfight</span>
+                        </div>
+                    </div>
+                    <div class="card-bottom">
+                        <div class="frequency-bars">
+                            <div class="bar-row loss-bar-row">
+                                <span class="bar-label">Losses</span>
+                                <div class="frequency-bar loss-bar">
+                                    <div class="bar-fill" style="width: 68%;"></div>
+                                </div>
+                            </div>
+                            <div class="bar-row win-bar-row">
+                                <span class="bar-label">Wins</span>
+                                <div class="frequency-bar win-bar">
+                                    <div class="bar-fill" style="width: 32%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-hover-info">
+                        <div class="hover-stat">Loss occurrence: <strong>68%</strong></div>
+                        <div class="hover-stat">Win occurrence: <strong>32%</strong></div>
+                        <div class="hover-stat">Typical phase: <strong>Mid → Late</strong></div>
+                    </div>
+                </div>
+
+                <!-- Pattern 3: DEAD-END -->
+                <div class="failure-card medium-impact" data-pattern="DIVE-PICK_OFF-SCALING">
+                    <div class="card-top">
+                        <span class="failure-label dead-end">DEAD-END</span>
+                    </div>
+                    <div class="card-middle">
+                        <div class="strategy-path">
+                            <span class="path-node">Dive Comp</span>
+                            <span class="path-arrow">→</span>
+                            <span class="path-node">Pick Off</span>
+                            <span class="path-arrow">→</span>
+                            <span class="path-node">Scaling</span>
+                        </div>
+                    </div>
+                    <div class="card-bottom">
+                        <div class="frequency-bars">
+                            <div class="bar-row loss-bar-row">
+                                <span class="bar-label">Losses</span>
+                                <div class="frequency-bar loss-bar">
+                                    <div class="bar-fill" style="width: 72%;"></div>
+                                </div>
+                            </div>
+                            <div class="bar-row win-bar-row">
+                                <span class="bar-label">Wins</span>
+                                <div class="frequency-bar win-bar">
+                                    <div class="bar-fill" style="width: 28%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-hover-info">
+                        <div class="hover-stat">Loss occurrence: <strong>72%</strong></div>
+                        <div class="hover-stat">Win occurrence: <strong>28%</strong></div>
+                        <div class="hover-stat">Typical phase: <strong>Early → Late</strong></div>
+                    </div>
+                </div>
+
+                <!-- Pattern 4: LATE PIVOT -->
+                <div class="failure-card low-impact" data-pattern="BOT_PRESSURE-POKE-SCALING">
+                    <div class="card-top">
+                        <span class="failure-label late-pivot">LATE PIVOT</span>
+                    </div>
+                    <div class="card-middle">
+                        <div class="strategy-path">
+                            <span class="path-node">Bot Pressure</span>
+                            <span class="path-arrow">→</span>
+                            <span class="path-node">Poke Siege</span>
+                            <span class="path-arrow">→</span>
+                            <span class="path-node">Scaling</span>
+                        </div>
+                    </div>
+                    <div class="card-bottom">
+                        <div class="frequency-bars">
+                            <div class="bar-row loss-bar-row">
+                                <span class="bar-label">Losses</span>
+                                <div class="frequency-bar loss-bar">
+                                    <div class="bar-fill" style="width: 62%;"></div>
+                                </div>
+                            </div>
+                            <div class="bar-row win-bar-row">
+                                <span class="bar-label">Wins</span>
+                                <div class="frequency-bar win-bar">
+                                    <div class="bar-fill" style="width: 38%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-hover-info">
+                        <div class="hover-stat">Loss occurrence: <strong>62%</strong></div>
+                        <div class="hover-stat">Win occurrence: <strong>38%</strong></div>
+                        <div class="hover-stat">Typical phase: <strong>Mid → Late</strong></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 8: Lynchpin Stress Test -->
+    <section class="analysis-section lynchpin-stress-section">
+        <div class="section-content">
+            <!-- Header -->
+            <div class="stress-header">
+                <h2 class="section-title">Lynchpin Stress Test</h2>
+                <p class="section-subtitle">Simulated impact of denying a critical strategy.</p>
+                <div class="info-icon-inline" data-tooltip="This view removes a key strategy and shows how the team's strategic system degrades.">ⓘ</div>
+            </div>
+
+            <!-- Lynchpin Selector -->
+            <div class="lynchpin-selector">
+                <label class="selector-label">Select Lynchpin to Deny:</label>
+                <div class="lynchpin-chips">
+                    <button class="lynchpin-chip active" data-lynchpin="OBJECTIVE">
+                        <span class="chip-icon">🎯</span>
+                        <span class="chip-name">Objective Control</span>
+                    </button>
+                    <button class="lynchpin-chip" data-lynchpin="TEAMFIGHT">
+                        <span class="chip-icon">⚔️</span>
+                        <span class="chip-name">Frontline Teamfight</span>
+                    </button>
+                    <button class="lynchpin-chip" data-lynchpin="SCALING">
+                        <span class="chip-icon">📈</span>
+                        <span class="chip-name">Scaling Insurance</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Graph Impact View -->
+            <div class="stress-graph-container">
+                <canvas id="stressTestGraph" width="1200" height="500"></canvas>
+                
+                <!-- Collapsed Node Tooltip -->
+                <div class="stress-tooltip" id="stressTooltip">
+                    <div class="tooltip-content"></div>
+                </div>
+                
+                <!-- Legend -->
+                <div class="stress-legend">
+                    <div class="legend-item">
+                        <div class="legend-icon removed"></div>
+                        <span>Denied Strategy</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-icon collapsed"></div>
+                        <span>Collapsed Paths</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-icon surviving"></div>
+                        <span>Surviving Paths</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Impact Summary -->
+            <div class="impact-summary">
+                <div class="impact-metric">
+                    <div class="metric-label">Win Probability Drop</div>
+                    <div class="metric-visual">
+                        <div class="probability-meter">
+                            <div class="meter-fill" style="width: 12%;"></div>
+                        </div>
+                        <span class="metric-value">−12%</span>
+                    </div>
+                </div>
+
+                <div class="impact-metric">
+                    <div class="metric-label">Paths Lost</div>
+                    <div class="metric-visual">
+                        <div class="paths-count">
+                            <span class="count-number">4</span>
+                            <span class="count-label">transitions</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="impact-metric">
+                    <div class="metric-label">Phase Impact</div>
+                    <div class="metric-visual">
+                        <div class="phase-indicators">
+                            <span class="phase-badge critical">Early</span>
+                            <span class="phase-badge critical">Mid</span>
+                            <span class="phase-badge moderate">Late</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 9: In-Game Strategy Phase Profile -->
+    <section class="analysis-section phase-profile-section">
+        <div class="section-content">
+            <!-- Header -->
+            <div class="phase-header">
+                <h2 class="section-title">In-Game Strategy Phase Profile</h2>
+                <p class="section-subtitle">Dominant strategies by game phase (aggregated across matches).</p>
+                <div class="info-icon-inline" data-tooltip="This timeline aggregates multiple games to show when each strategy is most commonly used.">ⓘ</div>
+            </div>
+
+            <!-- Strategy Phase Timeline -->
+            <div class="phase-timeline-container">
+                <!-- Objective Markers (Above) -->
+                <div class="objective-markers">
+                    <div class="marker dragon" style="left: 12.5%;" data-tooltip="Typical Dragon timing across games">
+                        <div class="marker-dot"></div>
+                        <div class="marker-label">Dragon</div>
+                    </div>
+                    <div class="marker herald" style="left: 20%;" data-tooltip="Typical Herald timing across games">
+                        <div class="marker-dot"></div>
+                        <div class="marker-label">Herald</div>
+                    </div>
+                    <div class="marker dragon" style="left: 37.5%;" data-tooltip="Typical Dragon timing across games">
+                        <div class="marker-dot"></div>
+                        <div class="marker-label">Dragon</div>
+                    </div>
+                    <div class="marker baron" style="left: 50%;" data-tooltip="Typical Baron timing across games">
+                        <div class="marker-dot"></div>
+                        <div class="marker-label">Baron</div>
+                    </div>
+                    <div class="marker dragon" style="left: 62.5%;" data-tooltip="Typical Dragon timing across games">
+                        <div class="marker-dot"></div>
+                        <div class="marker-label">Dragon</div>
+                    </div>
+                    <div class="marker baron" style="left: 75%;" data-tooltip="Typical Baron timing across games">
+                        <div class="marker-dot"></div>
+                        <div class="marker-label">Baron</div>
+                    </div>
+                </div>
+
+                <!-- Main Timeline Bar -->
+                <div class="timeline-bar">
+                    <div class="timeline-segment bot-pressure" style="width: 20%;">
+                        <span class="segment-label">Bot Pressure</span>
+                    </div>
+                    <div class="timeline-segment objective" style="width: 25%;">
+                        <span class="segment-label">Objective Control</span>
+                    </div>
+                    <div class="timeline-segment teamfight" style="width: 20%;">
+                        <span class="segment-label">Teamfight</span>
+                    </div>
+                    <div class="timeline-segment mid-tempo" style="width: 15%;">
+                        <span class="segment-label">Mid Tempo</span>
+                    </div>
+                    <div class="timeline-segment scaling" style="width: 20%;">
+                        <span class="segment-label">Scaling Insurance</span>
+                    </div>
+                </div>
+
+                <!-- Time Axis -->
+                <div class="time-axis">
+                    <span class="time-mark">0</span>
+                    <span class="time-mark">10</span>
+                    <span class="time-mark">20</span>
+                    <span class="time-mark">30</span>
+                    <span class="time-mark">40 min</span>
+                </div>
+
+                <!-- Teamfight Markers (Below) -->
+                <div class="teamfight-markers">
+                    <div class="fight-marker" style="left: 15%;" data-tooltip="High frequency teamfight window"></div>
+                    <div class="fight-marker" style="left: 18%;" data-tooltip="High frequency teamfight window"></div>
+                    <div class="fight-marker" style="left: 32%;" data-tooltip="High frequency teamfight window"></div>
+                    <div class="fight-marker" style="left: 35%;" data-tooltip="High frequency teamfight window"></div>
+                    <div class="fight-marker" style="left: 38%;" data-tooltip="High frequency teamfight window"></div>
+                    <div class="fight-marker" style="left: 52%;" data-tooltip="High frequency teamfight window"></div>
+                    <div class="fight-marker" style="left: 55%;" data-tooltip="High frequency teamfight window"></div>
+                    <div class="fight-marker" style="left: 58%;" data-tooltip="High frequency teamfight window"></div>
+                    <div class="fight-marker" style="left: 70%;" data-tooltip="High frequency teamfight window"></div>
+                    <div class="fight-marker" style="left: 73%;" data-tooltip="High frequency teamfight window"></div>
+                </div>
+            </div>
+
+            <!-- Legend & How to Read -->
+            <div class="phase-guide">
+                <div class="guide-section">
+                    <h4>Visual Legend</h4>
+                    <div class="legend-items-phase">
+                        <div class="legend-row-phase">
+                            <div class="color-block bot-pressure"></div>
+                            <span>Bot Pressure</span>
+                        </div>
+                        <div class="legend-row-phase">
+                            <div class="color-block objective"></div>
+                            <span>Objective Control</span>
+                        </div>
+                        <div class="legend-row-phase">
+                            <div class="color-block teamfight"></div>
+                            <span>Teamfight</span>
+                        </div>
+                        <div class="legend-row-phase">
+                            <div class="color-block mid-tempo"></div>
+                            <span>Mid Tempo</span>
+                        </div>
+                        <div class="legend-row-phase">
+                            <div class="color-block scaling"></div>
+                            <span>Scaling Insurance</span>
+                        </div>
+                        <div class="legend-row-phase">
+                            <div class="marker-dot-legend gold"></div>
+                            <span>Major objective timing</span>
+                        </div>
+                        <div class="legend-row-phase">
+                            <div class="marker-dot-legend red"></div>
+                            <span>Teamfight window</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="guide-section">
+                    <h4>How to Read</h4>
+                    <ul class="reading-points">
+                        <li>Blocks = dominant strategy</li>
+                        <li>Longer block = longer commitment</li>
+                        <li>Sharp change = strategic pivot</li>
+                        <li>Late stability = reliable closer</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 10: Monte Carlo Match Outcome Simulator -->
+    <section class="analysis-section monte-carlo-section">
+        <div class="section-content">
+            <!-- Header -->
+            <div class="monte-header">
+                <h2 class="section-title">Monte Carlo Match Outcome Simulator</h2>
+                <p class="section-subtitle">Probabilistic future modeling based on strategic tendencies</p>
+                <div class="info-icon-inline" data-tooltip="Simulates 10,000 matches using learned strategic patterns from the transition graph.">ⓘ</div>
+            </div>
+
+            <!-- Main Grid Layout -->
+            <div class="monte-grid">
+                <!-- Left: Simulation Controls -->
+                <div class="monte-controls">
+                    <h3 class="control-title">Simulation Controls</h3>
+                    
+                    <div class="control-group">
+                        <label class="control-label">Number of Simulations</label>
+                        <div class="sim-presets">
+                            <button class="preset-btn" data-sims="1000">1,000</button>
+                            <button class="preset-btn" data-sims="5000">5,000</button>
+                            <button class="preset-btn active" data-sims="10000">10,000</button>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">Scenario Modifiers</label>
+                        <div class="toggle-options">
+                            <label class="toggle-option">
+                                <input type="checkbox" id="deny-lynchpin">
+                                <span class="toggle-label">Deny Lynchpin Strategy</span>
+                            </label>
+                            <label class="toggle-option">
+                                <input type="checkbox" id="force-early">
+                                <span class="toggle-label">Force Early Tempo</span>
+                            </label>
+                            <label class="toggle-option">
+                                <input type="checkbox" id="delay-scaling">
+                                <span class="toggle-label">Delay Scaling</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button class="run-simulation-btn" id="runMonteCarlo">
+                        <span class="btn-icon">▶</span>
+                        <span class="btn-text">Run Simulation</span>
+                    </button>
+
+                    <div class="simulation-status" id="simStatus">
+                        <div class="status-text">Ready to simulate</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Center: Outcome Distribution -->
+                <div class="monte-outcome">
+                    <h3 class="outcome-title">Outcome Distribution</h3>
+                    
+                    <div class="outcome-chart">
+                        <canvas id="outcomeDistribution" width="400" height="300"></canvas>
+                    </div>
+
+                    <div class="outcome-metrics">
+                        <div class="metric-card">
+                            <div class="metric-label">Win Rate</div>
+                            <div class="metric-value win-rate">58%</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Avg Duration</div>
+                            <div class="metric-value duration">33.4 min</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Volatility</div>
+                            <div class="metric-value volatility">High after 25 min</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Strategic Outcome Attribution -->
+                <div class="monte-attribution">
+                    <h3 class="attribution-title">Strategic Outcome Attribution</h3>
+                    
+                    <div class="attribution-section wins">
+                        <h4 class="section-header">Wins Due To:</h4>
+                        <div class="attribution-bars">
+                            <div class="attribution-item">
+                                <div class="item-label">Objective Control dominance</div>
+                                <div class="item-bar">
+                                    <div class="bar-fill win" style="width: 41%;"></div>
+                                    <span class="bar-value">41%</span>
+                                </div>
+                            </div>
+                            <div class="attribution-item">
+                                <div class="item-label">Teamfight superiority</div>
+                                <div class="item-bar">
+                                    <div class="bar-fill win" style="width: 32%;"></div>
+                                    <span class="bar-value">32%</span>
+                                </div>
+                            </div>
+                            <div class="attribution-item">
+                                <div class="item-label">Scaling execution</div>
+                                <div class="item-bar">
+                                    <div class="bar-fill win" style="width: 27%;"></div>
+                                    <span class="bar-value">27%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="attribution-section losses">
+                        <h4 class="section-header">Losses Due To:</h4>
+                        <div class="attribution-bars">
+                            <div class="attribution-item">
+                                <div class="item-label">Failed early tempo</div>
+                                <div class="item-bar">
+                                    <div class="bar-fill loss" style="width: 19%;"></div>
+                                    <span class="bar-value">19%</span>
+                                </div>
+                            </div>
+                            <div class="attribution-item">
+                                <div class="item-label">Scaling denied</div>
+                                <div class="item-bar">
+                                    <div class="bar-fill loss" style="width: 8%;"></div>
+                                    <span class="bar-value">8%</span>
+                                </div>
+                            </div>
+                            <div class="attribution-item">
+                                <div class="item-label">Lynchpin collapsed</div>
+                                <div class="item-bar">
+                                    <div class="bar-fill loss" style="width: 15%;"></div>
+                                    <span class="bar-value">15%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Algorithm Note -->
+            <div class="algorithm-note">
+                <strong>Note:</strong> This is strategy-space Monte Carlo simulation. 
+                No champion mechanics, gold simulation, or lane micro. 
+                Outcomes based on strategic transition patterns only.
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 11: Robustness & Variance -->
+    <section class="analysis-section robustness-section">
+        <div class="section-content panel-shell">
+            <div class="panel-header">
+                <div class="header-left">
+                    <h2 class="section-title">Robustness & Variance</h2>
+                    <p class="section-subtitle">How stable is this strategic plan across different game states?</p>
+                </div>
+                <div class="info-icon-inline" data-tooltip="Shows win rate stability and what causes outcome variance.">ⓘ</div>
+            </div>
+
+            <div class="variance-summary-row">
+                <div class="metric-chip neutral">
+                    <span class="chip-label">Expected Win Rate</span>
+                    <span class="chip-value" id="expectedWinRate">58%</span>
+                </div>
+                <div class="metric-chip neutral">
+                    <span class="chip-label">Range</span>
+                    <span class="chip-value" id="winRateRange">51% → 64%</span>
+                </div>
+                <div class="metric-chip" id="volatilityChip">
+                    <span class="chip-label">Volatility</span>
+                    <span class="chip-value" id="volatilityLabel">MED</span>
+                </div>
+            </div>
+
+            <div class="variance-band-chart">
+                <div class="band-bar">
+                    <div class="band-min" id="bandMin">51%</div>
+                    <div class="band-track">
+                        <div class="band-fill" id="bandFill"></div>
+                        <div class="band-marker" id="bandMarker" data-tooltip="Expected: 58%"></div>
+                    </div>
+                    <div class="band-max" id="bandMax">64%</div>
+                </div>
+            </div>
+
+            <div class="failure-cause-list">
+                <h4>Top Failure Causes</h4>
+                <div class="cause-items" id="failureCauses">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 12: Redundancy & Backup Paths -->
+    <section class="analysis-section redundancy-section">
+        <div class="section-content panel-shell">
+            <div class="panel-header">
+                <div class="header-left">
+                    <h2 class="section-title">Redundancy & Backup Paths</h2>
+                    <p class="section-subtitle">Does the team have alternative win conditions?</p>
+                </div>
+                <div class="info-icon-inline" data-tooltip="Shows primary win path and available backup strategies.">ⓘ</div>
+            </div>
+
+            <div class="redundancy-score-card">
+                <div class="score-display">
+                    <span class="score-number" id="redundancyScore">1</span>
+                    <span class="score-max">/3</span>
+                </div>
+                <div class="score-interpretation" id="redundancyInterpretation">Limited backup</div>
+            </div>
+
+            <div class="primary-path-card">
+                <h4>Primary Win Path</h4>
+                <div class="path-renderer" id="primaryPath">
+                    <!-- Populated by JS -->
+                </div>
+                <div class="path-meta">
+                    <span class="path-probability" id="primaryProbability">21%</span>
+                    <span class="path-tag win-heavy" id="primaryTag">WIN-HEAVY</span>
+                </div>
+            </div>
+
+            <div class="backup-paths-container">
+                <h4>Backup Paths</h4>
+                <div class="backup-paths-grid" id="backupPaths">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 13: Predictability Index -->
+    <section class="analysis-section predictability-section">
+        <div class="section-content panel-shell">
+            <div class="panel-header">
+                <div class="header-left">
+                    <h2 class="section-title">Predictability Index</h2>
+                    <p class="section-subtitle">How scripted is this team's strategic behavior?</p>
+                </div>
+                <div class="info-icon-inline" data-tooltip="Lower entropy = more predictable patterns.">ⓘ</div>
+            </div>
+
+            <div class="predictability-gauge">
+                <div class="gauge-bar">
+                    <div class="gauge-segment unpredictable">Unpredictable</div>
+                    <div class="gauge-segment readable active">Readable</div>
+                    <div class="gauge-segment scripted">Scripted</div>
+                </div>
+                <div class="entropy-display" data-tooltip="Entropy: 0.21 (lower = more scripted)">
+                    <span class="entropy-label">Entropy Score:</span>
+                    <span class="entropy-value" id="entropyScore">0.21</span>
+                </div>
+            </div>
+
+            <div class="most-repeated-card">
+                <h4>Most Repeated Sequence</h4>
+                <div class="repeated-path" id="repeatedPath">
+                    <!-- Populated by JS -->
+                </div>
+                <div class="repeated-share">
+                    <div class="share-bar">
+                        <div class="share-fill" id="repeatedShareFill"></div>
+                    </div>
+                    <span class="share-value" id="repeatedShareValue">72%</span>
+                </div>
+            </div>
+
+            <div class="predictability-notes">
+                <h4>Pattern Flags</h4>
+                <ul class="flag-list" id="predictabilityFlags">
+                    <!-- Populated by JS -->
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 14: Denial Priority Stack -->
+    <section class="analysis-section denial-section">
+        <div class="section-content panel-shell">
+            <div class="panel-header">
+                <div class="header-left">
+                    <h2 class="section-title">Denial Priority Stack</h2>
+                    <p class="section-subtitle">What should we ban or deny first?</p>
+                </div>
+                <div class="info-icon-inline" data-tooltip="Ranked by expected win rate drop when denied.">ⓘ</div>
+            </div>
+
+            <div class="denial-rank-list" id="denialRankList">
+                <!-- Populated by JS -->
+            </div>
+
+            <div class="denial-rationale-drawer" id="denialDrawer">
+                <button class="drawer-close" id="closeDrawer">×</button>
+                <h3 id="drawerTitle">Strategy Denial Details</h3>
+                <div class="drawer-content" id="drawerContent">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sticky Coach Summary Button -->
+    <button class="coach-summary-trigger" id="coachSummaryBtn">
+        <span class="btn-icon">📋</span>
+        <span class="btn-text">Coach Summary</span>
+    </button>
+
+    <!-- Coach Summary Modal -->
+    <div class="coach-modal-overlay" id="coachModal">
+        <div class="coach-modal">
+            <button class="modal-close" id="closeCoachModal">×</button>
+            
+            <div class="modal-header">
+                <h2>Coach Summary</h2>
+                <p>Strategic recommendations based on 10,000 simulations</p>
+            </div>
+
+            <div class="modal-body">
+                <div class="modal-left">
+                    <div class="identity-block">
+                        <h3>Team Identity</h3>
+                        <p class="identity-primary" id="identityPrimary">Primary identity: Objective-focused teamfight composition</p>
+                        <p class="identity-fallback" id="identityFallback">Fallback identity: Scaling insurance with poke</p>
+                    </div>
+
+                    <div class="must-deny-block">
+                        <h3>Must Deny</h3>
+                        <div class="deny-items" id="mustDenyItems">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-right">
+                    <div class="timing-block">
+                        <h3>Timing Windows</h3>
+                        <div class="timing-chips">
+                            <div class="timing-chip pressure">
+                                <span class="timing-label">Pressure</span>
+                                <span class="timing-value" id="pressureWindow">12–18 min</span>
+                            </div>
+                            <div class="timing-chip avoid">
+                                <span class="timing-label">Avoid</span>
+                                <span class="timing-value" id="avoidWindow">&gt;30 min</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="map-plan-block">
+                        <h3>Map Plan</h3>
+                        <div class="map-phases">
+                            <div class="phase-column">
+                                <h4>Early</h4>
+                                <ul id="mapEarly">
+                                    <!-- Populated by JS -->
+                                </ul>
+                            </div>
+                            <div class="phase-column">
+                                <h4>Mid</h4>
+                                <ul id="mapMid">
+                                    <!-- Populated by JS -->
+                                </ul>
+                            </div>
+                            <div class="phase-column">
+                                <h4>Late</h4>
+                                <ul id="mapLate">
+                                    <!-- Populated by JS -->
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="warnings-block">
+                        <h3>⚠️ Warnings</h3>
+                        <ul class="warning-list" id="warningsList">
+                            <!-- Populated by JS -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <div class="confidence-display">
+                    <span class="confidence-label">Confidence:</span>
+                    <span class="confidence-value" id="confidenceValue">MED</span>
+                </div>
+                <div class="sim-count-display">
+                    <span class="sim-label">Simulations:</span>
+                    <span class="sim-value" id="simCountValue">10,000</span>
+                </div>
+            </div>
         </div>
     </div>
 
